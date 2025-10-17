@@ -3,9 +3,14 @@
 interface JournalEntryFormProps {
   entry: string;
   onEntryChange: (newEntry: string) => void;
+  onSubmit: () => void;
 }
 
-function JournalEntryForm({ entry, onEntryChange }: JournalEntryFormProps) {
+function JournalEntryForm({
+  entry,
+  onEntryChange,
+  onSubmit,
+}: JournalEntryFormProps) {
   return (
     <div>
       <h2>Write your Entry</h2>
@@ -15,6 +20,7 @@ function JournalEntryForm({ entry, onEntryChange }: JournalEntryFormProps) {
         placeholder='Write your journal entry...'
         rows={6}
       />
+      <button onClick={onSubmit}>Save Entry</button>
     </div>
   );
 }

@@ -195,54 +195,65 @@ A phased approach to building a React + TypeScript journaling application.
 
 ---
 
-## Conversation Links
-
-- **Phase 0:** [Current conversation - Setup]
-
 # Handoff Notes
 
 I'm continuing my React journal app learning project.
 
 Project: React Journal App  
-Completed: Phase 0 & Phase 1 ✅  
-Repository: https://github.com/YOUR_GITHUB_USERNAME/journal-app  
+Completed: Phase 0, Phase 1 & Phase 2 ✅  
+Repository: https://github.com/DaClownie/journal-app  
 Current Branch: main  
 Dev Server: npm run dev (runs on http://localhost:5173)
 
-## Phase 1 Completion Summary
+## Phase 2 Completion Summary
 
 **What We Built:**
 
-- JournalEntryForm component (controlled textarea input)
-- JournalEntryDisplay component (displays entry with timestamp)
-- App.tsx orchestrates state and passes props to child components
+- Updated state management to store multiple entries in an array
+- Added Submit button to JournalEntryForm component
+- Created JournalEntryList component to display all entries
+- Implemented entry list rendering using .map()
+- Added unique IDs to each entry for React keys
 
 **Key Files:**
 
-- `src/App.tsx` - Main component with state management
-- `src/components/JournalEntryForm.tsx` - Form component
-- `src/components/JournalEntryDisplay.tsx` - Display component with template literals and ternary
+- `src/App.tsx` - Manages array state with two state variables: `entries` (saved entries) and `currentText` (current draft)
+- `src/components/JournalEntryForm.tsx` - Form with textarea and Submit button
+- `src/components/JournalEntryList.tsx` - List component using .map() to render entries with keys
+- `src/components/JournalEntryDisplay.tsx` - No longer used (can be deleted)
 
 **Concepts Mastered:**
 
-- React: Components, useState, props, controlled inputs, event handlers
-- JavaScript: Arrow functions, template literals, objects, Date objects
-- TypeScript: Type annotations, interfaces for props, type aliases for data models
+- React: Array state management, rendering lists with .map(), keys for list items, conditional rendering (empty state)
+- JavaScript: .map() method, spread operator (...), Date objects with toLocaleDateString/toLocaleTimeString(), .trim() for validation
+- TypeScript: Array typing (JournalEntry[]), export type, import type, interfaces for props
 
 **Current Data Structure:**
 
 ```ts
-type JournalEntry = {
+export type JournalEntry = {
+  id: string;
   text: string;
   timestamp: Date;
 };
 ```
 
-**Next Phase: Phase 2**
-Build entry list functionality:
+**State Management Pattern:**
 
-- Store multiple journal entries in an array
-- Display them as a list using .map()
-- Learn array state management and list rendering with keys
+```ts
+const [entries, setEntries] = useState<JournalEntry[]>([]);
+const [currentText, setCurrentText] = useState<string>('');
+
+// Adding new entry to beginning of array
+setEntries([newEntry, ...entries]);
+```
+
+**Next Phase: Phase 3**
+Add localStorage persistence:
+
+- Learn useEffect hook for side effects
+- Save entries to localStorage
+- Load entries on page refresh
+- Handle JSON serialization with Date objects
 
 I'm a React/TypeScript beginner and need instructional explanations with links to docs.
