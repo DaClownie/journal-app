@@ -4,6 +4,20 @@ Personal discoveries, "aha!" moments, and reference materials while building the
 
 ## JavaScript Concepts
 
+### Template Literals
+
+- Use backticks: `string here`
+- Interpolate with ${expression}
+- Same as Python f-strings or C# $""
+- Pure JavaScript feature (ES6)
+
+Example:
+
+```js
+const name = 'Alice';
+const greeting = `Hello, ${name}!`;
+```
+
 ### Arrow Functions
 
 _To be filled as we learn..._
@@ -53,7 +67,10 @@ _To be filled as we learn..._
 
 ## Common Patterns & Snippets
 
-_Code snippets I want to remember will go here..._
+```ts
+interface JournalEntryFormProps { ... }  // Props = interface
+type JournalEntry = { ... }               // Data model = type
+```
 
 ---
 

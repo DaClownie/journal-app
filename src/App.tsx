@@ -1,35 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
+import JournalEntryForm from './components/JournalEntryForm';
+import JournalEntryDisplay from './components/JournalEntryDisplay';
+
+// Define the shape of a journal entry using a TypeScript type
+type JournalEntry = {
+  text: string;
+  timestamp: Date;
+};
 
 function App() {
-  const [count, setCount] = useState(0)
+  // Declare a state variable called "entry" with initial value ""
+  const [entry, setEntry] = useState<JournalEntry>({
+    text: '',
+    timestamp: new Date(),
+  });
+
+  const handleEntryChange = (newText: string) => {
+    setEntry({
+      text: newText,
+      timestamp: new Date(),
+    });
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className='App'>
+      <h1>My Journal</h1>
+
+      <JournalEntryForm entry={entry.text} onEntryChange={handleEntryChange} />
+
+      <JournalEntryDisplay text={entry.text} timestamp={entry.timestamp} />
+    </div>
+  );
 }
 
-export default App
+export default App;
