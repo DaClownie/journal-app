@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import JournalEntryForm from './components/JournalEntryForm';
 import JournalEntryList from './components/JournalEntryList';
-// import JournalEntryDisplay from './components/JournalEntryDisplay';
+
+// Constant for our localStorage key - prevents typos
+const STORAGE_KEY = 'journal-entries';
 
 // Define the shape of a journal entry using a TypeScript type
 export type JournalEntry = {
@@ -11,10 +13,37 @@ export type JournalEntry = {
   timestamp: Date;
 };
 
+type StoredJournalEntry = {
+  id: string;
+  text: string;
+  timestamp: string;
+};
+
 function App() {
   // Declare a state variable called "entry" with initial value ""
   const [entries, setEntries] = useState<JournalEntry[]>([]);
   const [currentText, setCurrentText] = useState<string>('');
+
+  useEffect(() => {
+    const storedData = localStorage.getItem(STORAGE_KEY);
+
+    if (storedData) {
+      const parsedEntries: StoredJournalEntry[] = JSON.parse(storedData);
+
+      const entriesWithDates = parsedEntries.map(
+        (entry: StoredJournalEntry) => ({
+          ...entry,
+          timestamp: new Date(entry.timestamp),
+        })
+      );
+
+      setEntries(entriesWithDates);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+  }, [entries]);
 
   const handleEntryChange = (newText: string) => {
     setCurrentText(newText);
@@ -50,7 +79,6 @@ function App() {
       />
 
       <JournalEntryList entries={entries} />
-      {/* <JournalEntryDisplay text={entry.text} timestamp={entry.timestamp} /> */}
       <p>Number of entries saved: {entries.length}</p>
     </div>
   );

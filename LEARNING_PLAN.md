@@ -55,58 +55,58 @@ A phased approach to building a React + TypeScript journaling application.
 
 ## Phase 2: Entry List
 
-**Status:** Not Started
+**Status:** Completed
 
 **Goals:**
 
-- Store multiple journal entries
-- Display them as a list
-- Add timestamps to entries
+- ✅ Store multiple journal entries
+- ✅ Display them as a list
+- ✅ Add timestamps to entries
 
 **React Concepts:**
 
-- Rendering lists
-- Keys in lists
-- Array state management
+- ❓ Rendering lists
+- ❓ Keys in lists
+- ❓ Array state management
 
 **JavaScript Concepts:**
 
-- Array methods (.map)
+- ❓ Array methods (.map)
 - Date objects
-- Spread operator
+- ❓ Spread operator
 
 **TypeScript Concepts:**
 
 - Interfaces for data structures
-- Array typing
+- ❓ Array typing
 
 ---
 
 ## Phase 3: Local Storage Persistence
 
-**Status:** Not Started
+**Status:** Completed
 
 **Goals:**
 
-- Save entries to localStorage
-- Load entries on page refresh
-- Persist data between sessions
+- ✅ Save entries to localStorage
+- ✅ Load entries on page refresh
+- ✅ Persist data between sessions
 
 **React Concepts:**
 
-- useEffect hook
-- Side effects
-- Dependency arrays
+- ✅ useEffect hook
+- ✅ Side effects
+- ✅ Dependency arrays
 
 **JavaScript Concepts:**
 
-- JSON.stringify and JSON.parse
-- localStorage API
+- ✅ JSON.stringify and JSON.parse
+- ✅ localStorage API
 
 **TypeScript Concepts:**
 
-- Type assertions
-- Handling potentially null values
+- ✅ Type assertions
+- ✅ Handling potentially null values
 
 ---
 
@@ -200,35 +200,36 @@ A phased approach to building a React + TypeScript journaling application.
 I'm continuing my React journal app learning project.
 
 Project: React Journal App  
-Completed: Phase 0, Phase 1 & Phase 2 ✅  
+Completed: Phase 0, Phase 1, Phase 2 & Phase 3 ✅  
 Repository: https://github.com/DaClownie/journal-app  
 Current Branch: main  
 Dev Server: npm run dev (runs on http://localhost:5173)
 
-## Phase 2 Completion Summary
+## Phase 3 Completion Summary
 
 **What We Built:**
 
-- Updated state management to store multiple entries in an array
-- Added Submit button to JournalEntryForm component
-- Created JournalEntryList component to display all entries
-- Implemented entry list rendering using .map()
-- Added unique IDs to each entry for React keys
+- Added localStorage persistence to save and load journal entries
+- Implemented useEffect hook for side effects
+- Created load effect that runs once on component mount
+- Created save effect that runs whenever entries change
+- Handled Date object serialization/deserialization
+- Added type safety for stored data with StoredJournalEntry type
+- Deleted unused JournalEntryDisplay component
 
 **Key Files:**
 
-- `src/App.tsx` - Manages array state with two state variables: `entries` (saved entries) and `currentText` (current draft)
-- `src/components/JournalEntryForm.tsx` - Form with textarea and Submit button
-- `src/components/JournalEntryList.tsx` - List component using .map() to render entries with keys
-- `src/components/JournalEntryDisplay.tsx` - No longer used (can be deleted)
+- `src/App.tsx` - Now includes two useEffect hooks: one for loading from localStorage (runs once), one for saving to localStorage (runs when entries change)
+- `src/components/JournalEntryForm.tsx` - Unchanged
+- `src/components/JournalEntryList.tsx` - Unchanged
 
 **Concepts Mastered:**
 
-- React: Array state management, rendering lists with .map(), keys for list items, conditional rendering (empty state)
-- JavaScript: .map() method, spread operator (...), Date objects with toLocaleDateString/toLocaleTimeString(), .trim() for validation
-- TypeScript: Array typing (JournalEntry[]), export type, import type, interfaces for props
+- React: useEffect hook, side effects, dependency arrays (empty [] vs [entries]), effect timing (runs after render)
+- JavaScript: localStorage API (getItem/setItem), JSON.stringify(), JSON.parse(), Date serialization, constants for magic strings
+- TypeScript: Type guards (if (storedData)), type inference, structural typing, helper types for data transformation, handling nullable types (string | null)
 
-**Current Data Structure:**
+**Current Data Structures:**
 
 ```ts
 export type JournalEntry = {
@@ -236,24 +237,45 @@ export type JournalEntry = {
   text: string;
   timestamp: Date;
 };
+
+type StoredJournalEntry = {
+  id: string;
+  text: string;
+  timestamp: string; // ISO string in localStorage
+};
 ```
 
-**State Management Pattern:**
+**Key Implementation Patterns:**
 
 ```ts
-const [entries, setEntries] = useState<JournalEntry[]>([]);
-const [currentText, setCurrentText] = useState<string>('');
+const STORAGE_KEY = 'journal-entries';
 
-// Adding new entry to beginning of array
-setEntries([newEntry, ...entries]);
+// Load effect - runs once on mount
+useEffect(() => {
+  const storedData = localStorage.getItem(STORAGE_KEY);
+  if (storedData) {
+    const parsedEntries: StoredJournalEntry[] = JSON.parse(storedData);
+    const entriesWithDates = parsedEntries.map((entry: StoredJournalEntry) => ({
+      ...entry,
+      timestamp: new Date(entry.timestamp),
+    }));
+    setEntries(entriesWithDates);
+  }
+}, []); // Empty array = run once
+
+// Save effect - runs when entries change
+useEffect(() => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+}, [entries]); // Dependency on entries
 ```
 
-**Next Phase: Phase 3**
-Add localStorage persistence:
+**Next Phase: Phase 4**
+Add tagging system:
 
-- Learn useEffect hook for side effects
-- Save entries to localStorage
-- Load entries on page refresh
-- Handle JSON serialization with Date objects
+- Create custom tags
+- Apply multiple tags to entries
+- Filter entries by tags
+- Learn complex state management
+- Use .filter() method and Set data structure
 
 I'm a React/TypeScript beginner and need instructional explanations with links to docs.

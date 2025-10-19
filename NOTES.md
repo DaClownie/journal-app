@@ -28,7 +28,16 @@ _To be filled as we learn..._
 
 ### Destructuring
 
-_To be filled as we learn..._
+```ts
+import React from 'react';
+const useState = React.useState;
+const useEffect = React.useEffect;
+
+// same as:
+import { useState, useEffect } from 'react';
+```
+
+The curly braces mean extract these specific named things
 
 ---
 
@@ -51,6 +60,21 @@ _To be filled as we learn..._
 _To be filled as we learn..._
 
 ### Hooks
+
+## useEffect - React's Side Effect Hook
+
+```js
+useEffect(() => {
+  // Code here runs AFTER component renders
+  console.log('Effect is running!');
+}, [dependencies]);
+```
+
+- With no array, the code within useEffect runs after every Render
+- With an empty array it runs only once, after the first render of the component
+- With any dependencies it will run after the first render of the component, and anytime one of the dependencies changes.
+- **Critical rule** - Put every value from your component that the effect usees into the dependency array.
+  - If the component uses `name` and `age`, then the array should show `[name, age]`
 
 _To be filled as we learn..._
 
